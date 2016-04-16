@@ -5,6 +5,8 @@ public class UrchinTrigger : MonoBehaviour {
 
 	public Urchin urchin;
 	public bool urchinIsHome;
+	public bool playerIsHome;
+	public GameObject player;
 
 	void OnTriggerStay(Collider other)
 	{
@@ -12,8 +14,10 @@ public class UrchinTrigger : MonoBehaviour {
 			urchinIsHome = true;
 
 		if (other.tag != "Player") return;
-		
-		urchin.MoveToward(other.transform);
+
+		playerIsHome = true;
+		player = other.transform.parent.gameObject;
+//		urchin.MoveToward(other.transform);
 	}
 
 	void OnTriggerExit(Collider other)
@@ -21,5 +25,7 @@ public class UrchinTrigger : MonoBehaviour {
 		if (other.tag == "Enemy")
 			urchinIsHome = false;
 
+		if (other.tag == "Enemy")
+		playerIsHome = false;
 	}
 }
