@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour {
 
 		pCController = pc.GetComponent<PCController>();
 
+	}
+
+	void Start()
+	{
 		HideAllLevels();
 		ShowCurrentLevel ();
 	}

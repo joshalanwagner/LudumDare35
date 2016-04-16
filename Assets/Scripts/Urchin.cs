@@ -3,21 +3,28 @@ using System.Collections;
 
 public class Urchin : MonoBehaviour {
 
-	public SphereCollider sc;
+	public UrchinTrigger ut;
+//	private SphereCollider sc;
 	public float forceFactor = 1f;
 	public float tooFarDistance = 0f;
 	public float tooCloseDistance = 0f; 
 	public float randomForce = 1f;
 
+	[System.NonSerialized]
+	public Vector3 startingPos;
+
 	private Rigidbody rb;
 	private float distToGround;
-	private UrchinTrigger ut;
+
+	// urchin needs to be reset if it falls.
 
 	void Awake()
 	{
+		startingPos = transform.position;
 		rb = GetComponent<Rigidbody>();
-		ut = GameObject.Find ("UrchinTrigger").GetComponent<UrchinTrigger>();
+//		ut = GameObject.Find ("UrchinTrigger").GetComponent<UrchinTrigger>();
 		distToGround = GetComponent<SphereCollider>().radius;
+//		sc = ut.GetComponent<SphereCollider>();
 	}
 
 	void Start()
@@ -30,24 +37,6 @@ public class Urchin : MonoBehaviour {
 		rb.AddForce(Random.Range(-randomForce, randomForce), 0f, Random.Range(-randomForce, randomForce)); 
 	}
 
-// if anyone besides the ground is hitting my collider, I move towards them.
-
-	public void MoveToward(Transform otherTrans)
-	{
-		Vector3 moveVector = Vector3.Normalize( otherTrans.position - transform.position);
-
-		if (Grounded())
-			rb.AddForce(moveVector * forceFactor);
-	}
-
-	public void MoveAwayFrom(Transform otherTrans)
-	{
-		Vector3 moveVector = Vector3.Normalize(transform.position -  otherTrans.position);
-		
-		if (Grounded())
-			rb.AddForce(moveVector * forceFactor);
-	}
-
 	void FixedUpdate()
 	{
 		if (ut.playerIsHome && Grounded())
@@ -58,15 +47,35 @@ public class Urchin : MonoBehaviour {
 		{
 			MoveToward(ut.transform);
 		}
-		else if (TooCloseToHome() && Grounded())
+//		else if (TooCloseToHome() && Grounded())
+		else if (TooCloseToHome())
 		{
+			Debug.Log ("Too Close!");
 			MoveAwayFrom(ut.transform);
 		}
 	}
 
+// if anyone besides the ground is hitting my collider, I move towards them.
+
+	public void MoveToward(Transform otherTrans)
+	{
+		Vector3 moveVector = Vector3.Normalize(otherTrans.position - transform.position);
+
+		if (Grounded())
+			rb.AddForce(moveVector * forceFactor);
+	}
+
+	public void MoveAwayFrom(Transform otherTrans)
+	{
+		Vector3 moveVector = Vector3.Normalize(transform.position - otherTrans.position);
+		
+		if (Grounded())
+			rb.AddForce(moveVector * forceFactor);
+	}
+
 	private bool Grounded()
 	{
-		return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.1f);
+		return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.25f);
 	}
 
 	bool TooFarFromHome()
@@ -90,4 +99,21 @@ public class Urchin : MonoBehaviour {
 		}
 		return false;
 	}
+
+	public void ResetToStart()
+	{
+		rb.velocity = Vector3.zero;
+		rb.angularVelocity = Vector3.zero;
+		
+		transform.position = startingPos;
+	}
+
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.tag == "Death")
+		{
+			Invoke("ResetToStart", 5f);
+		}
+	}
+
 }
