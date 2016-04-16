@@ -47,12 +47,14 @@ public class PCController : MonoBehaviour {
 
 	void Reform()
 	{
+		Time.timeScale = 1.0f;
 		ShiftToShape(icoso);
 //		rb.constraints = RigidbodyConstraints.None;
 	}
 
 	void Flatten()
 	{
+		Time.timeScale = 0.5f;
 		ShiftToShape(cone);
 		Reorient();
 //		rb.constraints = RigidbodyConstraints.FreezeRotation;
