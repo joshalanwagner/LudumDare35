@@ -4,14 +4,22 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
 	public Transform target;
-	private Vector3 offset;
+	public Vector3 offset;
 
 	void Awake () 
 	{
-		offset = target.position - transform.position;
+//		offset = target.position - transform.position;
+		FollowTarget ();
+		transform.LookAt(target);
 	}
 	
 	void LateUpdate () 
+	{
+		FollowTarget ();
+	}
+
+
+	void FollowTarget ()
 	{
 		transform.position = target.position - offset;
 	}
