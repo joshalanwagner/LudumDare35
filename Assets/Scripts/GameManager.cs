@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject pc;
 	private PCController pCController;
 	public int maxLevelCompleted = 0;
+	private CameraController camControl;
 
 	void Awake ()
 	{
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour {
 //			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
 //		}
 //		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
-
+		camControl = GameObject.Find ("Main Camera").GetComponent<CameraController>();
 		pCController = pc.GetComponent<PCController>();
 
 	}
@@ -54,11 +55,18 @@ public class GameManager : MonoBehaviour {
 			return;
 		}
 
+		camControl.ZoomIn();
+		
 		levels [maxLevelCompleted].SetActive (true);
 		// need to set player at last checkpoint location.
 		if (maxLevelCompleted > 0)
 		{
 			ResetPlayerCharacter ();
+		}
+
+		if (maxLevelCompleted == 10)
+		{
+			camControl.ZoomOut();
 		}
 	}
 
