@@ -46,10 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\PowerUpCube.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CubeController.cs" />
-     <Compile Include="Assets\Scripts\PowerUpSphere.cs" />
+     <Compile Include="Assets\Scripts\PowerUp.cs" />
+     <Compile Include="Assets\Scripts\PowerUpCube.cs" />
+     <Compile Include="Assets\Scripts\PowerUpIcoso.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity_511/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

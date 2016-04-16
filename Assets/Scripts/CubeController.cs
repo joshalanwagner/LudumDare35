@@ -8,18 +8,18 @@ public class CubeController : MonoBehaviour {
 	public float jumpFactor = 7f;
 	public float flatGravFactor = 0.5f;
 	private enum State {Normal, Flat, Tall};
+	private enum Shape {Cube, Icoso};
 	private State state = State.Normal;
+	private Shape shape = Shape.Cube;
 	private Rigidbody rb;
 	private Vector3 normalScale = new Vector3(0.5f, 0.5f, 0.5f); 
-	private Vector3 tallScale = new Vector3(0.25f, 1.0f, 0.25f); 
+	private Vector3 tallScale = new Vector3(0.25f, 0.75f, 0.25f); 
 	private Vector3 flatScale = new Vector3(1.0f, 0.25f, 1.0f); 
 
 	public GameObject cube;
-	public GameObject sphere;
+	public GameObject icoso;
 	
 
-	// Try adjusting gravity instead? except that would affect the gravity of everything.
-	// Gravity scale feels too big. Trying a smaller size...
 
 	void Awake () 
 	{
@@ -78,6 +78,7 @@ public class CubeController : MonoBehaviour {
 	{
 		transform.localScale = normalScale;
 		state = State.Normal;
+		rb.constraints = RigidbodyConstraints.None;
 	}
 
 	void GrowTall()
@@ -86,6 +87,7 @@ public class CubeController : MonoBehaviour {
 		Reorient();
 		transform.localScale = tallScale;
 		state = State.Tall;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 
 	void GrowFlat()
@@ -93,6 +95,7 @@ public class CubeController : MonoBehaviour {
 		Reorient();
 		transform.localScale = flatScale;
 		state = State.Flat;
+		rb.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 
 	void Reorient()
@@ -101,16 +104,18 @@ public class CubeController : MonoBehaviour {
 		transform.rotation = Quaternion.identity;
 	}
 
-	public void ShiftToSphere()
+	public void ShiftToIcoso()
 	{
+		shape = Shape.Icoso;
 		cube.SetActive(false);
-		sphere.SetActive(true);
-		
+		icoso.SetActive(true);
+		// Icoso is faster.. but doesn't climb as well...
 	}
 
 	public void ShiftToCube()
 	{
-		sphere.SetActive(false);
+		shape = Shape.Cube;
+		icoso.SetActive(false);
 		cube.SetActive(true);
 	}
 

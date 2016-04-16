@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PowerUpCube : MonoBehaviour {
 
+
+
 	void OnTriggerEnter(Collider PC)
 	{
 		Debug.Log ("ShiftToCube");
@@ -10,4 +12,6 @@ public class PowerUpCube : MonoBehaviour {
 		
 		Destroy(this.gameObject);
 	}
+
+
 }
