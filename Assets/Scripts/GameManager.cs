@@ -6,15 +6,19 @@ public class GameManager : MonoBehaviour {
 
 	public List<GameObject> levels;
 	public GameObject pc;
-	private int maxLevelCompleted = 0;
+	private PCController pCController;
+	public int maxLevelCompleted = 0;
 
 	void Awake ()
 	{
-		if (PlayerPrefs.HasKey("maxLevelCompleted"))
-		{
-			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
-		}
-		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
+//		if (PlayerPrefs.HasKey("maxLevelCompleted"))
+//		{
+//			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
+//		}
+//		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
+
+		pCController = pc.GetComponent<PCController>();
+
 		HideAllLevels();
 		ShowCurrentLevel ();
 	}
@@ -35,7 +39,7 @@ public class GameManager : MonoBehaviour {
 
 	}
 
-	void ShowCurrentLevel ()
+	private void ShowCurrentLevel ()
 	{
 		if (maxLevelCompleted >= levels.Count)
 		{
@@ -48,10 +52,20 @@ public class GameManager : MonoBehaviour {
 
 		levels [maxLevelCompleted].SetActive (true);
 		// need to set player at last checkpoint location.
-		Vector3 playerPos = levels[maxLevelCompleted - 1].transform.Find("Checkpoint").transform.position;
-		pc.transform.position = playerPos;
-
+		if (maxLevelCompleted > 0)
+		{
+			ResetPlayerCharacter ();
+		}
 	}
+
+	public void ResetPlayerCharacter ()
+	{
+		pCController.StopVelocity();
+
+		Vector3 playerPos = levels [maxLevelCompleted - 1].transform.Find ("Checkpoint").transform.position;
+		pc.transform.position = playerPos;
+	}
+
 
 	private void HideAllLevels()
 	{

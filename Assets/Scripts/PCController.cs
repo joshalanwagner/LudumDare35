@@ -5,8 +5,9 @@ public class PCController : MonoBehaviour {
 
 	public float forceFactor = 15f;
 	public float torqueFactor = 8f;
+	public float maxFallingSpeed = 4f;
 //	public float jumpFactor = 7f;
-	public float flatGravFactor = 0.5f;
+	public float floatFactor = 0.5f;
 	private enum State {Normal, Flat, Tall};
 	private State state = State.Normal;
 	private Rigidbody rb;
@@ -31,8 +32,19 @@ public class PCController : MonoBehaviour {
 
 		rb.AddForce(horizontal * forceFactor, 0f, vertical * forceFactor);
 
-		if (cone.activeSelf) // && IsFallingTooFast();
-			rb.AddForce(Physics.gravity * rb.mass * -flatGravFactor);
+		if (cone.activeSelf && IsFallingTooFast())
+			rb.AddForce(Physics.gravity * rb.mass * -floatFactor);
+	}
+
+	bool IsFallingTooFast()
+	{
+		if (rb.velocity.y < -maxFallingSpeed)
+		{
+			Debug.Log ("IsFallingTooFast");
+			
+			return true;
+		}
+		return false;
 	}
 
 	void Update()
@@ -60,10 +72,15 @@ public class PCController : MonoBehaviour {
 //		rb.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 
-	void Reorient()
+	private void Reorient()
 	{
 		rb.angularVelocity = Vector3.zero;
 		transform.rotation = Quaternion.identity;
+	}
+
+	public void StopVelocity()
+	{
+		rb.velocity = Vector3.zero;
 	}
 
 	public void ShiftToShape(GameObject newShape)
@@ -76,10 +93,12 @@ public class PCController : MonoBehaviour {
 		newShape.SetActive(true);
 	}
 
-	//	void JumpUp()
-	//	{
-	//		rb.AddForce(Vector3.up * jumpFactor, ForceMode.Impulse);
-	//	}
+	void OnTriggerEnter(Collider other)
+	{
+
+		if (other.tag == "Death")
+			GameObject.Find ("GameManager").GetComponent<GameManager>().ResetPlayerCharacter();
+	}
 
 
 }
