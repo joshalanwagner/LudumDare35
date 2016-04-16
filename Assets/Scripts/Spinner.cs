@@ -13,6 +13,6 @@ public class Spinner : MonoBehaviour {
 	
 	void FixedUpdate () 
 	{
-		rb.AddTorque(torque, ForceMode.Acceleration);
+		rb.AddRelativeTorque(torque, ForceMode.Acceleration);
 	}
 }
