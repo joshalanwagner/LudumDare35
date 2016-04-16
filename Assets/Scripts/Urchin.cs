@@ -7,11 +7,12 @@ public class Urchin : MonoBehaviour {
 	public float forceFactor = 1f;
 	private Rigidbody rb;
 	private float distToGround;
+	private UrchinTrigger ut;
 
 	void Awake()
 	{
 		rb = GetComponent<Rigidbody>();
-
+		ut = GameObject.Find ("UrchinTrigger").GetComponent<UrchinTrigger>();
 		distToGround = GetComponent<SphereCollider>().radius;
 	}
 
@@ -23,6 +24,17 @@ public class Urchin : MonoBehaviour {
 
 		if (Grounded())
 			rb.AddForce(moveVector * forceFactor);
+	}
+
+	void FixedUpdate()
+	{
+		// if I'm not within urchin collider
+		// and I'm grounded 
+		// move towards urchin collider.
+		if (!ut.urchinIsHome && Grounded())
+		{
+			MoveToward(ut.transform);
+		}
 
 	}
 

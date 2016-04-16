@@ -5,10 +5,16 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour {
 
 	public List<GameObject> levels;
+	public GameObject pc;
 	private int maxLevelCompleted = 0;
 
 	void Awake ()
 	{
+		if (PlayerPrefs.HasKey("maxLevelCompleted"))
+		{
+			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
+		}
+		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
 		HideAllLevels();
 		ShowCurrentLevel ();
 	}
@@ -20,6 +26,7 @@ public class GameManager : MonoBehaviour {
 			if (level == levels[i])
 			{
 				maxLevelCompleted = i + 1;
+				PlayerPrefs.SetInt("maxLevelCompleted", maxLevelCompleted);
 			}
 		}
 
@@ -34,10 +41,16 @@ public class GameManager : MonoBehaviour {
 		{
 			Debug.Log ("Game Completed");
 			maxLevelCompleted = 0;
+			HideAllLevels();
+			ShowCurrentLevel ();
 			return;
 		}
 
 		levels [maxLevelCompleted].SetActive (true);
+		// need to set player at last checkpoint location.
+		Vector3 playerPos = levels[maxLevelCompleted - 1].transform.Find("Checkpoint").transform.position;
+		pc.transform.position = playerPos;
+
 	}
 
 	private void HideAllLevels()
