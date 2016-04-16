@@ -4,7 +4,7 @@ using System.Collections;
 public class PowerUp : MonoBehaviour {
 
 	private Quaternion rotationIncrement;
-	private GameObject light;
+	private GameObject lightbulb;
 	private float lightOnTime;
 	private float lightOffTime;
 	private float timer;
@@ -12,7 +12,7 @@ public class PowerUp : MonoBehaviour {
 	void Awake ()
 	{
 		rotationIncrement = Quaternion.Euler(0f, 1f, 0f);
-		light = transform.GetChild(0).gameObject;
+		lightbulb = transform.GetChild(0).gameObject;
 
 		lightOnTime = Random.Range(0.2f, .35f);
 		lightOffTime = Random.Range(3f, 4.5f);
@@ -24,11 +24,11 @@ public class PowerUp : MonoBehaviour {
 
 		timer += Time.deltaTime;
 
-		if (light.activeSelf && timer > lightOnTime)
+		if (lightbulb.activeSelf && timer > lightOnTime)
 		{
 			TurnLightOff ();
 		}
-		if (!light.activeSelf && timer > lightOffTime)
+		if (!lightbulb.activeSelf && timer > lightOffTime)
 		{
 			TurnLightOn ();
 		}
@@ -37,12 +37,12 @@ public class PowerUp : MonoBehaviour {
 	void TurnLightOff ()
 	{
 		timer = 0f;
-		light.SetActive (false);
+		lightbulb.SetActive (false);
 	}
 
 	void TurnLightOn ()
 	{
 		timer = 0f;
-		light.SetActive (true);
+		lightbulb.SetActive (true);
 	}
 }
