@@ -5,9 +5,9 @@ public class PCController : MonoBehaviour {
 
 	public float forceFactor = 15f;
 	public float torqueFactor = 8f;
-	public float maxFallingSpeed = 4f;
+	public float maxFallingSpeed = 2f;
 //	public float jumpFactor = 7f;
-	public float floatFactor = 0.5f;
+	public float floatFactor = 1.2f;
 	private enum State {Normal, Flat, Tall};
 	private State state = State.Normal;
 	private Rigidbody rb;
@@ -43,6 +43,9 @@ public class PCController : MonoBehaviour {
 	void Update()
 	{
 		playerMat.SetColor( "_EmissionColor", new Color(gm.oscValue * 0.1f, 0f,  0f));
+		Debug.Log (gm.oscValue);
+		transform.localScale = Vector3.one * 0.5f + (Vector3.one * gm.oscValue * 0.01f) ;
+		
 
 		if (Input.GetKeyDown(KeyCode.LeftShift) ||
 		    Input.GetKeyDown(KeyCode.RightShift))
@@ -67,14 +70,12 @@ public class PCController : MonoBehaviour {
 
 	void Reform()
 	{
-		Time.timeScale = 1.0f;
 		ShiftToShape(icoso);
 //		rb.constraints = RigidbodyConstraints.None;
 	}
 
 	void Flatten()
 	{
-		Time.timeScale = 0.5f;
 		ShiftToShape(cone);
 		Reorient();
 //		rb.constraints = RigidbodyConstraints.FreezeRotation;
