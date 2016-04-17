@@ -6,7 +6,6 @@ public class PCController : MonoBehaviour {
 	public float forceFactor = 15f;
 	public float torqueFactor = 8f;
 	public float maxFallingSpeed = 2f;
-//	public float jumpFactor = 7f;
 	public float floatFactor = 1.2f;
 	private enum State {Normal, Flat, Tall};
 	private State state = State.Normal;
@@ -44,7 +43,6 @@ public class PCController : MonoBehaviour {
 	{
 		playerMat.SetColor( "_EmissionColor", new Color(gm.oscValue * 0.1f, 0f,  0f));
 		transform.localScale = Vector3.one * 0.5f + (Vector3.one * gm.oscValue * 0.01f) ;
-		
 
 		if (Input.GetKeyDown(KeyCode.LeftShift) ||
 		    Input.GetKeyDown(KeyCode.RightShift))
@@ -58,26 +56,20 @@ public class PCController : MonoBehaviour {
 	{
 		if (rb.velocity.y < -maxFallingSpeed)
 		{
-			Debug.Log ("IsFallingTooFast");
-			
 			return true;
 		}
 		return false;
 	}
 
-
-
 	void Reform()
 	{
 		ShiftToShape(icoso);
-//		rb.constraints = RigidbodyConstraints.None;
 	}
 
 	void Flatten()
 	{
 		ShiftToShape(cone);
 		Reorient();
-//		rb.constraints = RigidbodyConstraints.FreezeRotation;
 	}
 
 	private void Reorient()
@@ -93,7 +85,6 @@ public class PCController : MonoBehaviour {
 
 	public void ShiftToShape(GameObject newShape)
 	{
-		// set all shapes inactive
 		icoso.SetActive(false);
 		cube.SetActive(false);
 		cone.SetActive(false);
@@ -103,9 +94,10 @@ public class PCController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-
 		if (other.tag == "Death")
 		{
+			StopVelocity();
+			Reorient();
 			gm.ResetPlayerCharacter();
 			gm.ResetAllUrchin();
 		}

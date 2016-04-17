@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
 	{
 		HideAllLevels();
 		SetActiveLevels ();
+		ResetPlayerCharacter ();
 	}
 
 	void Update ()
@@ -96,7 +97,6 @@ public class GameManager : MonoBehaviour {
 		{
 			DeactivateLevel(maxLevelCompleted - 2);
 		}
-
 	}
 
 	void ActivateLevel (int levelToActivate)
@@ -117,10 +117,13 @@ public class GameManager : MonoBehaviour {
 
 	public void ResetPlayerCharacter ()
 	{
-		pCController.StopVelocity();
+		// only do this if the player is too far away.
+		Vector3 lastCheckpointPos = levels [maxLevelCompleted - 1].transform.Find ("Checkpoint").transform.position;
 
-		Vector3 playerPos = levels [maxLevelCompleted - 1].transform.Find ("Checkpoint").transform.position;
-		pc.transform.position = playerPos;
+		if (Vector3.Distance(pc.transform.position, lastCheckpointPos) > 1f)
+		{
+			pc.transform.position = lastCheckpointPos;
+		}
 	}
 
 	public void ResetAllUrchin()
