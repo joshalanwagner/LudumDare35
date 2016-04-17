@@ -17,9 +17,6 @@ public class GameManager : MonoBehaviour {
 	public float oscValue;
 	private List<GameObject> urchinList = new List<GameObject>();
 
-//	public Skybox skybox;
-//	public Material playerMat;
-
 	void Awake ()
 	{
 //		if (PlayerPrefs.HasKey("maxLevelCompleted"))
@@ -44,7 +41,6 @@ public class GameManager : MonoBehaviour {
 	{
 		oscValue = Mathf.Sin(Time.time * oscSpeed);
 
-		// might not use main light?
 		mainLight.intensity = 0.5f + (oscValue * 0.25f);
 
 //		skybox.SetColor( "_Tint", new Color(oscValue * 0.2f + 0.5f, 0.5f, -oscValue * 0.15f + 0.5f, 0.5f ) );

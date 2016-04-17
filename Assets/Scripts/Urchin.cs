@@ -102,9 +102,7 @@ public class Urchin : MonoBehaviour {
 
 	public void ResetToStart()
 	{
-		rb.velocity = Vector3.zero;
-		rb.angularVelocity = Vector3.zero;
-		
+		rb.isKinematic = false;
 		transform.position = startingPos;
 	}
 
@@ -113,6 +111,9 @@ public class Urchin : MonoBehaviour {
 		if (other.tag == "Death")
 		{
 //			Invoke("ResetToStart", 5f);
+//			rb.velocity = Vector3.zero;
+//			rb.angularVelocity = Vector3.zero;
+			rb.isKinematic = true;
 			gameObject.SetActive(false);
 		}
 	}

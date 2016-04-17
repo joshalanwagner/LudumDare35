@@ -25,7 +25,7 @@ public class UrchinTrigger : MonoBehaviour {
 		if (other.tag == "Enemy")
 			urchinIsHome = false;
 
-		if (other.tag == "Enemy")
+		if (other.tag == "Player")
 		playerIsHome = false;
 	}
 }
