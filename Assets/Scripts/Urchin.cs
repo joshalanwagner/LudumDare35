@@ -25,7 +25,6 @@ public class Urchin : MonoBehaviour {
 		startingPos = transform.position;
 		rb = GetComponent<Rigidbody>();
 		urchinMat = GetComponent<MeshRenderer>().material;
-		Debug.Log ("urchinMat " + urchinMat);
 		distToGround = GetComponent<SphereCollider>().radius;
 	}
 
