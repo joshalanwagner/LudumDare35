@@ -10,6 +10,11 @@ public class GameManager : MonoBehaviour {
 	public int maxLevelCompleted = 0;
 	private CameraController camControl;
 
+	private float oscSpeed = 6.777f; //6.8
+	public float oscValue;
+	
+
+
 	void Awake ()
 	{
 //		if (PlayerPrefs.HasKey("maxLevelCompleted"))
@@ -27,7 +32,12 @@ public class GameManager : MonoBehaviour {
 		HideAllLevels();
 		ShowCurrentLevel ();
 	}
-	
+
+	void Update ()
+	{
+		oscValue = Mathf.Sin(Time.time * oscSpeed);
+	}
+
 	public void LevelCompleted(GameObject level)
 	{
 		for (int i = 0; i < levels.Count; i++)

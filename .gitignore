@@ -9,3 +9,13 @@ Assembly-CSharp.csproj
 LudumDare35-csharp.sln
 LudumDare35.sln
 LudumDare35.userprefs
+Assembly-CSharp-Editor-vs.csproj
+Assembly-CSharp-Editor.csproj
+Assembly-CSharp-firstpass-vs.csproj
+Assembly-CSharp-firstpass.csproj
+Library/ScriptAssemblies/Assembly-CSharp-Editor.dll
+Library/ScriptAssemblies/Assembly-CSharp-Editor.dll.mdb
+Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll
+Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll.mdb
+Assets/Standard Assets.meta
+Assets/Editor/ImageEffects.meta
