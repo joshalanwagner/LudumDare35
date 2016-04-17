@@ -37,14 +37,15 @@ public class GameManager : MonoBehaviour {
 	void Start()
 	{
 		HideAllLevels();
-		ShowCurrentLevel ();
+		ShowCurrentLevels ();
 	}
 
 	void Update ()
 	{
 		oscValue = Mathf.Sin(Time.time * oscSpeed);
 
-		mainLight.intensity = 1.25f + (oscValue * 0.25f);
+		// might not use main light?
+		mainLight.intensity = 0.5f + (oscValue * 0.25f);
 
 //		skybox.SetColor( "_Tint", new Color(oscValue * 0.2f + 0.5f, 0.5f, -oscValue * 0.15f + 0.5f, 0.5f ) );
 	}
@@ -61,33 +62,53 @@ public class GameManager : MonoBehaviour {
 		}
 
 		HideAllLevels();
-		ShowCurrentLevel ();
+		ShowCurrentLevels ();
 	}
 
-	private void ShowCurrentLevel ()
+	private void ShowCurrentLevels ()
 	{
 		if (maxLevelCompleted >= levels.Count)
 		{
 			Debug.Log ("Game Completed");
 			maxLevelCompleted = 0;
 			HideAllLevels();
-			ShowCurrentLevel ();
+			ShowCurrentLevels ();
 			return;
 		}
 
 		camControl.ZoomIn();
 		
-		levels [maxLevelCompleted].SetActive (true);
+		ActivateLevel (maxLevelCompleted);
+		SwitchSpotlight(maxLevelCompleted, true);
+
+		// level after
+		if (maxLevelCompleted < levels.Count - 1)
+		{
+			ActivateLevel (maxLevelCompleted + 1);
+			SwitchSpotlight(maxLevelCompleted + 1, false);
+		}
+
 		// need to set player at last checkpoint location.
 		if (maxLevelCompleted > 0)
 		{
 			ResetPlayerCharacter ();
 		}
 
-		if (maxLevelCompleted == 10)
+		if (maxLevelCompleted == 10 || maxLevelCompleted == 11)
 		{
 			camControl.ZoomOut();
 		}
+	}
+
+	void ActivateLevel (int levelToActivate)
+	{
+		levels [levelToActivate].SetActive (true);
+	}
+
+	private void SwitchSpotlight(int level, bool on)
+	{
+		levels[level].transform.Find("Spotlight").gameObject.SetActive(on);
+
 	}
 
 	public void ResetPlayerCharacter ()
