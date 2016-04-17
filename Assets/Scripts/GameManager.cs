@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,11 +11,14 @@ public class GameManager : MonoBehaviour {
 	private PCController pCController;
 	public int maxLevelCompleted = 0;
 	private CameraController camControl;
+	private Light mainLight;
 
 	private float oscSpeed = 6.777f; //6.8
 	public float oscValue;
-	
+	private List<GameObject> urchinList = new List<GameObject>();
 
+//	public Skybox skybox;
+//	public Material playerMat;
 
 	void Awake ()
 	{
@@ -24,7 +29,9 @@ public class GameManager : MonoBehaviour {
 //		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
 		camControl = GameObject.Find ("Main Camera").GetComponent<CameraController>();
 		pCController = pc.GetComponent<PCController>();
+		mainLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
+		GetAllUrchinRefs();
 	}
 
 	void Start()
@@ -36,6 +43,10 @@ public class GameManager : MonoBehaviour {
 	void Update ()
 	{
 		oscValue = Mathf.Sin(Time.time * oscSpeed);
+
+		mainLight.intensity = 1.25f + (oscValue * 0.25f);
+
+//		skybox.SetColor( "_Tint", new Color(oscValue * 0.2f + 0.5f, 0.5f, -oscValue * 0.15f + 0.5f, 0.5f ) );
 	}
 
 	public void LevelCompleted(GameObject level)
@@ -51,7 +62,6 @@ public class GameManager : MonoBehaviour {
 
 		HideAllLevels();
 		ShowCurrentLevel ();
-
 	}
 
 	private void ShowCurrentLevel ()
@@ -88,6 +98,23 @@ public class GameManager : MonoBehaviour {
 		pc.transform.position = playerPos;
 	}
 
+	public void ResetAllUrchin()
+	{
+		foreach(GameObject urchin in urchinList)
+		{
+			urchin.SetActive(true);
+			urchin.GetComponent<Urchin>().ResetToStart();
+		}
+	}
+
+	private void GetAllUrchinRefs()
+	{
+		foreach(GameObject go in GameObject.FindObjectsOfType(typeof(GameObject)))
+		{
+			if(go.name == "Urchin")
+				urchinList.Add (go);
+		}
+	}
 
 	private void HideAllLevels()
 	{

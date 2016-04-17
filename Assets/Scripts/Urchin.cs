@@ -112,7 +112,8 @@ public class Urchin : MonoBehaviour {
 	{
 		if (other.tag == "Death")
 		{
-			Invoke("ResetToStart", 5f);
+//			Invoke("ResetToStart", 5f);
+			gameObject.SetActive(false);
 		}
 	}
 

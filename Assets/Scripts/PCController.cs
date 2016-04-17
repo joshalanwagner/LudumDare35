@@ -11,6 +11,8 @@ public class PCController : MonoBehaviour {
 	private enum State {Normal, Flat, Tall};
 	private State state = State.Normal;
 	private Rigidbody rb;
+	private Material playerMat;
+	private GameManager gm;
 
 	public GameObject cube;
 	public GameObject icoso;
@@ -20,8 +22,10 @@ public class PCController : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody>();
 		ShiftToShape(icoso);
+		playerMat = transform.Find("Icoso").GetComponent<MeshRenderer>().material;
+		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
-	
+
 	void FixedUpdate () 
 	{
 		float vertical = Input.GetAxis("Vertical");
@@ -36,6 +40,18 @@ public class PCController : MonoBehaviour {
 			rb.AddForce(Physics.gravity * rb.mass * -floatFactor);
 	}
 
+	void Update()
+	{
+		playerMat.SetColor( "_EmissionColor", new Color(gm.oscValue * 0.1f, 0f,  0f));
+
+		if (Input.GetKeyDown(KeyCode.LeftShift) ||
+		    Input.GetKeyDown(KeyCode.RightShift))
+			Flatten();
+		if (Input.GetKeyUp(KeyCode.LeftShift) ||
+		    Input.GetKeyUp(KeyCode.RightShift))
+			Reform();
+	}
+
 	bool IsFallingTooFast()
 	{
 		if (rb.velocity.y < -maxFallingSpeed)
@@ -47,15 +63,7 @@ public class PCController : MonoBehaviour {
 		return false;
 	}
 
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.LeftShift) ||
-		    Input.GetKeyDown(KeyCode.RightShift))
-			Flatten();
-		if (Input.GetKeyUp(KeyCode.LeftShift) ||
-		    Input.GetKeyUp(KeyCode.RightShift))
-			Reform();
-	}
+
 
 	void Reform()
 	{
@@ -97,7 +105,10 @@ public class PCController : MonoBehaviour {
 	{
 
 		if (other.tag == "Death")
-			GameObject.Find ("GameManager").GetComponent<GameManager>().ResetPlayerCharacter();
+		{
+			gm.ResetPlayerCharacter();
+			gm.ResetAllUrchin();
+		}
 	}
 
 

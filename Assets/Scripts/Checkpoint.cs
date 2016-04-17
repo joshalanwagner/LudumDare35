@@ -7,11 +7,16 @@ public class Checkpoint : MonoBehaviour {
 	public Vector3 slowRotation = new Vector3(0f, 1f, 0f);
 	private Vector3 rootPos;
 	public float oscHeight = 0.12f;
-	
+	private float floatDist = 0.5f;
+
 	void Awake () 
 	{
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+		float newY = transform.position.y - DistanceToGround() + floatDist;
+		transform.position = new Vector3(transform.position.x,  newY, transform.position.z);
 		rootPos = transform.position;
+		
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -29,5 +34,16 @@ public class Checkpoint : MonoBehaviour {
 		transform.position = new Vector3(rootPos.x, rootPos.y + yMod, rootPos.z);
 
 
+	}
+
+	private float DistanceToGround()
+	{
+		RaycastHit hit;
+		Ray downRay = new Ray(transform.position, Vector3.down);
+		if (Physics.Raycast(downRay, out hit)) 
+		{
+			return hit.distance;
+		}
+		else return 0f;
 	}
 }
