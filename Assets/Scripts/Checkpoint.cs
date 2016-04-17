@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Checkpoint : MonoBehaviour {
 
-	GameManager gm;
+	private GameManager gm;
 	public Vector3 slowRotation = new Vector3(0f, 1f, 0f);
 	private Vector3 rootPos;
 	public float oscHeight = 0.12f;
@@ -24,6 +24,7 @@ public class Checkpoint : MonoBehaviour {
 		if (other.tag != "Player") return;
 
 		gm.LevelCompleted(transform.parent.gameObject);
+		gameObject.SetActive(false);
 	}
 
 	void Update ()
@@ -32,8 +33,6 @@ public class Checkpoint : MonoBehaviour {
 
 		float yMod = gm.oscValue * oscHeight;
 		transform.position = new Vector3(rootPos.x, rootPos.y + yMod, rootPos.z);
-
-
 	}
 
 	private float DistanceToGround()

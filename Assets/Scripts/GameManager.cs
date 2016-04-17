@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour {
 	void Start()
 	{
 		HideAllLevels();
-		ShowCurrentLevels ();
+		SetActiveLevels ();
 	}
 
 	void Update ()
@@ -57,21 +57,28 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-		HideAllLevels();
-		ShowCurrentLevels ();
-	}
-
-	private void ShowCurrentLevels ()
-	{
 		if (maxLevelCompleted >= levels.Count)
 		{
-			Debug.Log ("Game Completed");
-			maxLevelCompleted = 0;
-			HideAllLevels();
-			ShowCurrentLevels ();
+			GameWon ();
 			return;
 		}
 
+		SetActiveLevels ();
+
+		// need to set player at last checkpoint location.
+		if (maxLevelCompleted > 0)
+		{
+			ResetPlayerCharacter ();
+		}
+		
+		if (maxLevelCompleted == 10 || maxLevelCompleted == 11)
+		{
+			camControl.ZoomOut();
+		}
+	}
+
+	private void SetActiveLevels ()
+	{
 		camControl.ZoomIn();
 		
 		ActivateLevel (maxLevelCompleted);
@@ -84,21 +91,22 @@ public class GameManager : MonoBehaviour {
 			SwitchSpotlight(maxLevelCompleted + 1, false);
 		}
 
-		// need to set player at last checkpoint location.
-		if (maxLevelCompleted > 0)
+		// turn off two levels back, if exists
+		if (maxLevelCompleted > 1)
 		{
-			ResetPlayerCharacter ();
+			DeactivateLevel(maxLevelCompleted - 2);
 		}
 
-		if (maxLevelCompleted == 10 || maxLevelCompleted == 11)
-		{
-			camControl.ZoomOut();
-		}
 	}
 
 	void ActivateLevel (int levelToActivate)
 	{
 		levels [levelToActivate].SetActive (true);
+	}
+
+	void DeactivateLevel (int levelToActivate)
+	{
+		levels [levelToActivate].SetActive (false);
 	}
 
 	private void SwitchSpotlight(int level, bool on)
@@ -140,5 +148,13 @@ public class GameManager : MonoBehaviour {
 			level.SetActive(false);
 		}
 
+	}
+
+	void GameWon ()
+	{
+		Debug.Log ("Game Completed");
+		maxLevelCompleted = 0;
+		HideAllLevels ();
+		SetActiveLevels ();
 	}
 }

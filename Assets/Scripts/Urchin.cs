@@ -9,7 +9,9 @@ public class Urchin : MonoBehaviour {
 	public float tooFarDistance = 0f;
 	public float tooCloseDistance = 0f; 
 	public float randomForce = 1f;
-
+	private Material urchinMat;
+	private GameManager gm;
+	
 	[System.NonSerialized]
 	public Vector3 startingPos;
 
@@ -20,9 +22,12 @@ public class Urchin : MonoBehaviour {
 
 	void Awake()
 	{
+		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+		
 		startingPos = transform.position;
 		rb = GetComponent<Rigidbody>();
-//		ut = GameObject.Find ("UrchinTrigger").GetComponent<UrchinTrigger>();
+		urchinMat = GetComponent<MeshRenderer>().material;
+		Debug.Log ("urchinMat " + urchinMat);
 		distToGround = GetComponent<SphereCollider>().radius;
 //		sc = ut.GetComponent<SphereCollider>();
 	}
@@ -50,9 +55,17 @@ public class Urchin : MonoBehaviour {
 //		else if (TooCloseToHome() && Grounded())
 		else if (TooCloseToHome())
 		{
-			Debug.Log ("Too Close!");
 			MoveAwayFrom(ut.transform);
 		}
+	}
+
+	void Update ()
+	{
+		float colorVal = gm.oscValue * 0.1f + 0.1f;
+		Color newColor = new Color(colorVal, 0f , 0f);
+//		urchinMat.color = newColor;
+		urchinMat.SetColor( "_EmissionColor", newColor);
+		transform.localScale = Vector3.one  + (Vector3.one * gm.oscValue * 0.015f) ;
 	}
 
 // if anyone besides the ground is hitting my collider, I move towards them.
@@ -102,6 +115,7 @@ public class Urchin : MonoBehaviour {
 
 	public void ResetToStart()
 	{
+		ut.playerIsHome = false;
 		rb.isKinematic = false;
 		transform.position = startingPos;
 	}

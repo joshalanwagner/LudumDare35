@@ -43,7 +43,6 @@ public class PCController : MonoBehaviour {
 	void Update()
 	{
 		playerMat.SetColor( "_EmissionColor", new Color(gm.oscValue * 0.1f, 0f,  0f));
-		Debug.Log (gm.oscValue);
 		transform.localScale = Vector3.one * 0.5f + (Vector3.one * gm.oscValue * 0.01f) ;
 		
 
