@@ -19,6 +19,11 @@ public class GameManager : MonoBehaviour {
 	public float oscValue;
 	private List<GameObject> urchinList = new List<GameObject>();
 
+	private AudioSource audioSource;
+	
+	public AudioClip audioClip1;
+	public AudioClip audioClip2;
+
 	void Awake ()
 	{
 //		if (PlayerPrefs.HasKey("maxLevelCompleted"))
@@ -26,17 +31,19 @@ public class GameManager : MonoBehaviour {
 //			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
 //		}
 //		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
+		audioSource = GetComponent<AudioSource>();
 		camControl = GameObject.Find ("Main Camera").GetComponent<CameraController>();
 		pCController = pc.GetComponent<PCController>();
 		mainLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
 		GetAllUrchinRefs();
 	}
-
+	
 	void Start()
 	{
 		HideAllLevels();
 		SetActiveLevels ();
+		SetLevelMusic();
 		ResetPlayerCharacter ();
 	}
 
@@ -71,6 +78,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		SetActiveLevels ();
+		SetLevelMusic();
 
 		// need to set player at last checkpoint location.
 		if (maxLevelCompleted > 0)
@@ -103,6 +111,20 @@ public class GameManager : MonoBehaviour {
 		{
 			DeactivateLevel(maxLevelCompleted - 2);
 		}
+	}
+
+	void SetLevelMusic()
+	{
+		if (maxLevelCompleted == 1)
+			PlayMainTheme();
+		if (maxLevelCompleted == 3)
+			PlayFallingTheme();
+		if (maxLevelCompleted == 4)
+			PlayMainTheme();
+		if (maxLevelCompleted == 10)
+			PlayFallingTheme();
+		if (maxLevelCompleted == 11)
+			PlayMainTheme();
 	}
 
 	void ActivateLevel (int levelToActivate)
@@ -157,6 +179,18 @@ public class GameManager : MonoBehaviour {
 			level.SetActive(false);
 		}
 
+	}
+
+	void PlayMainTheme()
+	{
+		audioSource.clip = audioClip1;
+		audioSource.Play();
+	}
+	
+	void PlayFallingTheme()
+	{
+		audioSource.clip = audioClip2;
+		audioSource.Play();
 	}
 
 	void GameWon ()
