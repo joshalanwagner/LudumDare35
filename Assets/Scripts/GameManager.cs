@@ -99,18 +99,20 @@ public class GameManager : MonoBehaviour {
 		ActivateLevel (maxLevelCompleted);
 		SwitchSpotlight(maxLevelCompleted, true);
 
-		// level after
+		// turn on level after
 		if (maxLevelCompleted < levels.Count - 1)
 		{
 			ActivateLevel (maxLevelCompleted + 1);
 			SwitchSpotlight(maxLevelCompleted + 1, false);
 		}
 
+		// turn on one level back 
+		if (maxLevelCompleted > 0)
+			ActivateLevel(maxLevelCompleted - 1);
+
 		// turn off two levels back, if exists
 		if (maxLevelCompleted > 1)
-		{
 			DeactivateLevel(maxLevelCompleted - 2);
-		}
 	}
 
 	void SetLevelMusic()
@@ -125,6 +127,8 @@ public class GameManager : MonoBehaviour {
 			PlayFallingTheme();
 		if (maxLevelCompleted == 11)
 			PlayMainTheme();
+		if (maxLevelCompleted == 15)
+			PlayFallingTheme();
 	}
 
 	void ActivateLevel (int levelToActivate)
