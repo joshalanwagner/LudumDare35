@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour {
 	private List<GameObject> urchinList = new List<GameObject>();
 
 	private AudioSource audioSource;
+	private Text bigText;
+	private Text smallText;
 	
 	public AudioClip audioClip1;
 	public AudioClip audioClip2;
@@ -31,6 +33,9 @@ public class GameManager : MonoBehaviour {
 //			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
 //		}
 //		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
+		bigText = GameObject.Find("BigText").GetComponent<Text>();
+		smallText = GameObject.Find("SmallText").GetComponent<Text>();
+		
 		audioSource = GetComponent<AudioSource>();
 		camControl = GameObject.Find ("Main Camera").GetComponent<CameraController>();
 		pCController = pc.GetComponent<PCController>();
@@ -41,6 +46,7 @@ public class GameManager : MonoBehaviour {
 	
 	void Start()
 	{
+		ClearText();
 		HideAllLevels();
 		SetActiveLevels ();
 		SetLevelMusic();
@@ -62,6 +68,8 @@ public class GameManager : MonoBehaviour {
 
 	public void LevelCompleted(GameObject level)
 	{
+
+
 		for (int i = 0; i < levels.Count; i++)
 		{
 			if (level == levels[i])
@@ -70,6 +78,7 @@ public class GameManager : MonoBehaviour {
 				PlayerPrefs.SetInt("maxLevelCompleted", maxLevelCompleted);
 			}
 		}
+
 
 		if (maxLevelCompleted >= levels.Count)
 		{
@@ -157,12 +166,16 @@ public class GameManager : MonoBehaviour {
 	public void ResetPlayerCharacter ()
 	{
 		// only do this if the player is too far away.
-		Vector3 lastCheckpointPos = levels [maxLevelCompleted - 1].transform.Find ("Checkpoint").transform.position;
-
-		if (Vector3.Distance(pc.transform.position, lastCheckpointPos) > 1f)
+		if (maxLevelCompleted > 0)
 		{
-			pc.transform.position = lastCheckpointPos;
+			Vector3 lastCheckpointPos = levels [maxLevelCompleted - 1].transform.Find ("Checkpoint").transform.position;
+
+			if (Vector3.Distance(pc.transform.position, lastCheckpointPos) > 1f)
+			{
+				pc.transform.position = lastCheckpointPos;
+			}
 		}
+
 	}
 
 	public void ResetAllUrchin()
@@ -209,6 +222,16 @@ public class GameManager : MonoBehaviour {
 		Debug.Log ("Game Completed");
 		maxLevelCompleted = 0;
 		HideAllLevels ();
-		SetActiveLevels ();
+
+		bigText.text = "Dream Complete.";
+		smallText.text = "You wake up feeling refreshed.";
+		
+//		SetActiveLevels ();
+	}
+
+	private void ClearText()
+	{
+		bigText.text = "";
+		smallText.text = "";
 	}
 }
