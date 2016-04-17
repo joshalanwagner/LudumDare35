@@ -132,6 +132,10 @@ public class GameManager : MonoBehaviour {
 			PlayMainTheme();
 		if (maxLevelCompleted == 15)
 			PlayFallingTheme();
+		if (maxLevelCompleted == 16)
+			PlayFallingTheme();
+		if (maxLevelCompleted == 17)
+			PlayMainTheme();
 	}
 
 	void ActivateLevel (int levelToActivate)
