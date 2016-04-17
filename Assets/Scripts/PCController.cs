@@ -7,13 +7,11 @@ public class PCController : MonoBehaviour {
 	public float torqueFactor = 8f;
 	public float maxFallingSpeed = 2f;
 	public float floatFactor = 1.2f;
-	private enum State {Normal, Flat, Tall};
-	private State state = State.Normal;
 	private Rigidbody rb;
-	private Material playerMat;
+	public Material playerMat;
 	private GameManager gm;
-
-	public GameObject cube;
+	private Color rainbowColor;
+	private bool beatLastFrame;
 	public GameObject icoso;
 	public GameObject cone;
 	
@@ -21,7 +19,7 @@ public class PCController : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody>();
 		ShiftToShape(icoso);
-		playerMat = transform.Find("Icoso").GetComponent<MeshRenderer>().material;
+//		playerMat = transform.Find("Icoso").GetComponent<MeshRenderer>().material;
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 
@@ -41,8 +39,22 @@ public class PCController : MonoBehaviour {
 
 	void Update()
 	{
-		playerMat.SetColor( "_EmissionColor", new Color(gm.oscValue * 0.1f, 0f,  0f));
-		transform.localScale = Vector3.one * 0.5f + (Vector3.one * gm.oscValue * 0.01f) ;
+		// choose a random color to change to each cycle. 
+		if (gm.oscValue >= 0.98f && beatLastFrame == false)
+		{
+			rainbowColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+			rb.AddForce(Vector3.up * 0.6f, ForceMode.Impulse);
+			beatLastFrame = true;
+		} 
+		else
+			beatLastFrame = false;
+
+		float colorMult = (gm.oscValue + 1f) * 0.5f;
+
+		playerMat.SetColor( "_EmissionColor", rainbowColor * colorMult);
+
+
+//		transform.localScale = Vector3.one * 0.5f + (Vector3.one * gm.oscValue * 0.005f) ;
 
 		if (Input.GetKeyDown(KeyCode.LeftShift) ||
 		    Input.GetKeyDown(KeyCode.RightShift))
@@ -86,7 +98,6 @@ public class PCController : MonoBehaviour {
 	public void ShiftToShape(GameObject newShape)
 	{
 		icoso.SetActive(false);
-		cube.SetActive(false);
 		cone.SetActive(false);
 
 		newShape.SetActive(true);

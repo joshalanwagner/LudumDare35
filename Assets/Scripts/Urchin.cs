@@ -5,10 +5,10 @@ public class Urchin : MonoBehaviour {
 
 	public UrchinTrigger ut;
 //	private SphereCollider sc;
-	public float forceFactor = 1f;
+	public float forceFactor = 40f;
 	public float tooFarDistance = 0f;
 	public float tooCloseDistance = 0f; 
-	public float randomForce = 1f;
+	public float randomForce = 20f;
 	private Material urchinMat;
 	private GameManager gm;
 	
@@ -17,8 +17,6 @@ public class Urchin : MonoBehaviour {
 
 	private Rigidbody rb;
 	private float distToGround;
-
-	// urchin needs to be reset if it falls.
 
 	void Awake()
 	{
@@ -29,7 +27,6 @@ public class Urchin : MonoBehaviour {
 		urchinMat = GetComponent<MeshRenderer>().material;
 		Debug.Log ("urchinMat " + urchinMat);
 		distToGround = GetComponent<SphereCollider>().radius;
-//		sc = ut.GetComponent<SphereCollider>();
 	}
 
 	void Start()
@@ -52,8 +49,7 @@ public class Urchin : MonoBehaviour {
 		{
 			MoveToward(ut.transform);
 		}
-//		else if (TooCloseToHome() && Grounded())
-		else if (TooCloseToHome())
+		else if (TooCloseToHome() && Grounded())
 		{
 			MoveAwayFrom(ut.transform);
 		}
@@ -63,12 +59,9 @@ public class Urchin : MonoBehaviour {
 	{
 		float colorVal = gm.oscValue * 0.1f + 0.1f;
 		Color newColor = new Color(colorVal, 0f , 0f);
-//		urchinMat.color = newColor;
 		urchinMat.SetColor( "_EmissionColor", newColor);
 		transform.localScale = Vector3.one  + (Vector3.one * gm.oscValue * 0.015f) ;
 	}
-
-// if anyone besides the ground is hitting my collider, I move towards them.
 
 	public void MoveToward(Transform otherTrans)
 	{
@@ -76,6 +69,7 @@ public class Urchin : MonoBehaviour {
 
 		if (Grounded())
 			rb.AddForce(moveVector * forceFactor);
+
 	}
 
 	public void MoveAwayFrom(Transform otherTrans)
@@ -88,7 +82,7 @@ public class Urchin : MonoBehaviour {
 
 	private bool Grounded()
 	{
-		return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.25f);
+		return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.2f);
 	}
 
 	bool TooFarFromHome()
@@ -124,9 +118,6 @@ public class Urchin : MonoBehaviour {
 	{
 		if (other.tag == "Death")
 		{
-//			Invoke("ResetToStart", 5f);
-//			rb.velocity = Vector3.zero;
-//			rb.angularVelocity = Vector3.zero;
 			rb.isKinematic = true;
 			gameObject.SetActive(false);
 		}

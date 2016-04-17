@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
 
 	public List<GameObject> levels;
 	public GameObject pc;
+	public Material groundMat;
+
 	private PCController pCController;
 	public int maxLevelCompleted = 0;
 	private CameraController camControl;
@@ -42,7 +44,11 @@ public class GameManager : MonoBehaviour {
 	{
 		oscValue = Mathf.Sin(Time.time * oscSpeed);
 
-		mainLight.intensity = 0.5f + (oscValue * 0.25f);
+//		mainLight.intensity = 0.5f + (oscValue * 0.25f);
+
+		float colorVal = oscValue * 0.03f + 0.75f;
+
+		groundMat.color = new Color(colorVal, 0.75f, 0.8f);
 
 //		skybox.SetColor( "_Tint", new Color(oscValue * 0.2f + 0.5f, 0.5f, -oscValue * 0.15f + 0.5f, 0.5f ) );
 	}

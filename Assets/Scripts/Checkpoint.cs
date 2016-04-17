@@ -8,6 +8,7 @@ public class Checkpoint : MonoBehaviour {
 	private Vector3 rootPos;
 	public float oscHeight = 0.12f;
 	private float floatDist = 0.5f;
+	private Light myLight;
 
 	void Awake () 
 	{
@@ -16,6 +17,7 @@ public class Checkpoint : MonoBehaviour {
 		float newY = transform.position.y - DistanceToGround() + floatDist;
 		transform.position = new Vector3(transform.position.x,  newY, transform.position.z);
 		rootPos = transform.position;
+		myLight = transform.Find("Point light").GetComponent<Light>();
 		
 	}
 	
@@ -30,6 +32,8 @@ public class Checkpoint : MonoBehaviour {
 	void Update ()
 	{
 		transform.localRotation *= Quaternion.Euler(slowRotation);
+
+		myLight.intensity = (gm.oscValue * 0.35f) + 0.65f;
 
 		float yMod = gm.oscValue * oscHeight;
 		transform.position = new Vector3(rootPos.x, rootPos.y + yMod, rootPos.z);
