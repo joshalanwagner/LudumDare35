@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour {
 			ResetPlayerCharacter ();
 		}
 		
-		if (maxLevelCompleted == 10 || maxLevelCompleted == 11)
+		if (maxLevelCompleted >= 10f)
 		{
 			camControl.ZoomOut();
 		}
@@ -108,7 +108,10 @@ public class GameManager : MonoBehaviour {
 
 		// turn on one level back 
 		if (maxLevelCompleted > 0)
+		{
 			ActivateLevel(maxLevelCompleted - 1);
+			SwitchSpotlight(maxLevelCompleted - 1, false);
+		}
 
 		// turn off two levels back, if exists
 		if (maxLevelCompleted > 1)

@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
 	public Vector3 offset;
 	[System.NonSerialized]
 	public float defaultFOV;
-	public float zoomedOutFOV = 70f;
+	public float zoomedOutFOV = 55f;
 	private Camera cam;
 
 	void Awake () 
