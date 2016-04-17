@@ -26,6 +26,6 @@ public class UrchinTrigger : MonoBehaviour {
 			urchinIsHome = false;
 
 		if (other.tag == "Player")
-		playerIsHome = false;
+			playerIsHome = false;
 	}
 }
