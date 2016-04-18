@@ -78,26 +78,27 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-
 		if (maxLevelCompleted >= levels.Count)
 		{
 			GameWon ();
 			return;
 		}
 
-		SetActiveLevels ();
-		SetLevelMusic();
-		ShowTutorialText();
+		LoadCurrentLevel ();
+		
+	}
 
+	public void LoadCurrentLevel ()
+	{
+		SetActiveLevels ();
+		SetLevelMusic ();
+		ShowTutorialText ();
 		// need to set player at last checkpoint location.
-		if (maxLevelCompleted > 0)
-		{
+		if (maxLevelCompleted > 0) {
 			ResetPlayerCharacter ();
 		}
-		
-		if (maxLevelCompleted >= 10f)
-		{
-			camControl.ZoomOut();
+		if (maxLevelCompleted >= 10f) {
+			camControl.ZoomOut ();
 		}
 	}
 
