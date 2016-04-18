@@ -51,25 +51,20 @@ public class GameManager : MonoBehaviour {
 		SetActiveLevels ();
 		SetLevelMusic();
 		ResetPlayerCharacter ();
+		ShowTutorialText();
 	}
 
 	void Update ()
 	{
 		oscValue = Mathf.Sin(Time.time * oscSpeed);
 
-//		mainLight.intensity = 0.5f + (oscValue * 0.25f);
-
 		float colorVal = oscValue * 0.03f + 0.75f;
 
 		groundMat.color = new Color(colorVal, 0.75f, 0.8f);
-
-//		skybox.SetColor( "_Tint", new Color(oscValue * 0.2f + 0.5f, 0.5f, -oscValue * 0.15f + 0.5f, 0.5f ) );
 	}
 
 	public void LevelCompleted(GameObject level)
 	{
-
-
 		for (int i = 0; i < levels.Count; i++)
 		{
 			if (level == levels[i])
@@ -88,6 +83,7 @@ public class GameManager : MonoBehaviour {
 
 		SetActiveLevels ();
 		SetLevelMusic();
+		ShowTutorialText();
 
 		// need to set player at last checkpoint location.
 		if (maxLevelCompleted > 0)
@@ -99,6 +95,22 @@ public class GameManager : MonoBehaviour {
 		{
 			camControl.ZoomOut();
 		}
+	}
+
+	private void ShowTutorialText()
+	{
+		if (maxLevelCompleted == 1 ) 
+		{
+			bigText.text = "Shape Shifter";
+			smallText.text = "Disco Labyrinth Inferno";
+		}
+		else if (maxLevelCompleted == 2 ) 
+			smallText.text = "Hold 'Shift' to get down.";
+		 
+		else if (maxLevelCompleted == 3 ) 
+			smallText.text = "Hold 'Shift' to float down.";
+
+		Invoke("ClearText", 6f);
 	}
 
 	private void SetActiveLevels ()
