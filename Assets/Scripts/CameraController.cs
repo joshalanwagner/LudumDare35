@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour {
 	[System.NonSerialized]
 	public float defaultFOV;
 	public float zoomedOutFOV = 55f;
+	private float endZoomIn = 15f;
 	private Camera cam;
 
 	void Awake () 
@@ -39,4 +40,10 @@ public class CameraController : MonoBehaviour {
 	{
 		cam.fieldOfView = defaultFOV;
 	}
+
+	public void ZoomInForEnd()
+	{
+		cam.fieldOfView = endZoomIn;
+	}
+
 }

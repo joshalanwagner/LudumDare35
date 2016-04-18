@@ -7,7 +7,7 @@ public class PCController : MonoBehaviour {
 	public float torqueFactor = 8f;
 	public float maxFallingSpeed = 2f;
 	public float floatFactor = 1.2f;
-	private Rigidbody rb;
+	public Rigidbody rb;
 	public Material playerMat;
 	private GameManager gm;
 	private Color rainbowColor;

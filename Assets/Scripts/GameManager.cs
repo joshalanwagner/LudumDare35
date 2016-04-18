@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour {
 		mainLight = GameObject.Find("Directional Light").GetComponent<Light>();
 
 		GetAllUrchinRefs();
+		Time.timeScale = 1.0f;
 	}
 	
 	void Start()
@@ -157,6 +158,8 @@ public class GameManager : MonoBehaviour {
 			PlayFallingTheme();
 		if (maxLevelCompleted == 17)
 			PlayMainTheme();
+		if (maxLevelCompleted == 18)
+			PlayFallingTheme();
 	}
 
 	void ActivateLevel (int levelToActivate)
@@ -237,7 +240,13 @@ public class GameManager : MonoBehaviour {
 
 		bigText.text = "Dream Complete.";
 		smallText.text = "You wake up feeling refreshed.";
-		
+
+		pCController.rb.useGravity = false;
+		pCController.rb.velocity = Vector3.zero;
+		pCController.rb.constraints = RigidbodyConstraints.FreezePosition;
+		camControl.ZoomInForEnd();
+
+		Time.timeScale = 0.5f;
 //		SetActiveLevels ();
 	}
 
