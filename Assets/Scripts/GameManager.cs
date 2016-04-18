@@ -22,19 +22,22 @@ public class GameManager : MonoBehaviour {
 	private AudioSource audioSource;
 	private Text bigText;
 	private Text smallText;
+	private Text subText;
+	
 	
 	public AudioClip audioClip1;
 	public AudioClip audioClip2;
 
 	void Awake ()
 	{
-		if (PlayerPrefs.HasKey("maxLevelCompleted"))
-		{
-			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
-		}
+//		if (PlayerPrefs.HasKey("maxLevelCompleted"))
+//		{
+//			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
+//		}
 //		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
 		bigText = GameObject.Find("BigText").GetComponent<Text>();
 		smallText = GameObject.Find("SmallText").GetComponent<Text>();
+		subText = GameObject.Find("SubText").GetComponent<Text>();
 		
 		audioSource = GetComponent<AudioSource>();
 		camControl = GameObject.Find ("Main Camera").GetComponent<CameraController>();
@@ -104,12 +107,14 @@ public class GameManager : MonoBehaviour {
 		{
 			bigText.text = "Shape Shifter";
 			smallText.text = "Disco Labyrinth Inferno";
+			subText.text = "[Arrow Keys to Move It.]";
+			
 		}
 		else if (maxLevelCompleted == 2 ) 
-			smallText.text = "Hold 'Shift' to get down.";
+			smallText.text = "Hold 'Shift' to Get Down.";
 		 
 		else if (maxLevelCompleted == 3 ) 
-			smallText.text = "Hold 'Shift' to float down.";
+			smallText.text = "Hold 'Shift' to Float Down.";
 
 		Invoke("ClearText", 6f);
 	}
@@ -254,5 +259,6 @@ public class GameManager : MonoBehaviour {
 	{
 		bigText.text = "";
 		smallText.text = "";
+		subText.text = "";
 	}
 }
