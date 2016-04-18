@@ -28,10 +28,10 @@ public class GameManager : MonoBehaviour {
 
 	void Awake ()
 	{
-//		if (PlayerPrefs.HasKey("maxLevelCompleted"))
-//		{
-//			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
-//		}
+		if (PlayerPrefs.HasKey("maxLevelCompleted"))
+		{
+			maxLevelCompleted = PlayerPrefs.GetInt("maxLevelCompleted");
+		}
 //		Debug.Log ("maxLevelCompleted " + maxLevelCompleted);
 		bigText = GameObject.Find("BigText").GetComponent<Text>();
 		smallText = GameObject.Find("SmallText").GetComponent<Text>();
