@@ -18,6 +18,7 @@ public class Checkpoint : MonoBehaviour {
 		transform.position = new Vector3(transform.position.x,  newY, transform.position.z);
 		rootPos = transform.position;
 		myLight = transform.Find("Point light").GetComponent<Light>();
+
 		
 	}
 	
@@ -26,7 +27,11 @@ public class Checkpoint : MonoBehaviour {
 		if (other.tag != "Player") return;
 
 		gm.LevelCompleted(transform.parent.gameObject);
+
 		gameObject.SetActive(false);
+
+
+		Instantiate(Resources.Load("CheckpointParticles"), transform.position, transform.rotation);
 	}
 
 	void Update ()

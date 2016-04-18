@@ -40,14 +40,18 @@ public class PCController : MonoBehaviour {
 	void Update()
 	{
 		// choose a random color to change to each cycle. 
+		if (gm.oscValue <= -0.97f)
+			rainbowColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+
 		if (gm.oscValue >= 0.98f && beatLastFrame == false)
 		{
-			rainbowColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
 			rb.AddForce(Vector3.up * 0.6f, ForceMode.Impulse);
 			beatLastFrame = true;
 		} 
 		else
 			beatLastFrame = false;
+
+
 
 		float colorMult = (gm.oscValue + 1f) * 0.5f;
 
